@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+import "common/common.proto";
+option java_multiple_files = true;
+option java_package = "org.example.proto.user";
+
+message UserSearchRequest {
+  string id = 1;
+}
+
+message UserResponse {
+  string id = 1;
+  string name = 2;
+  common.Genre genre = 3;
+}
+
+message UserGenreUpdateRequest {
+  string id = 1;
+  common.Genre genre = 2;
+}
+
+service UserService {
+  rpc getUser(UserSearchRequest) returns (UserResponse);
+  rpc updateUserGenre(UserGenreUpdateRequest) returns (UserResponse);
+}
