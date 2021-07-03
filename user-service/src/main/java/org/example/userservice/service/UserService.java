@@ -1,5 +1,6 @@
 package org.example.userservice.service;
 
+import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.example.proto.common.Genre;
@@ -23,7 +24,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
   public void getUser(UserSearchRequest request, StreamObserver<UserResponse> responseObserver) {
     String id = request.getId();
 
-    User user = checkUser(id);
+    User user = checkUser(id, responseObserver);
     UserResponse userResponse = UserResponse.newBuilder()
         .setGenre(Genre.valueOf(user.getGenre()))
         .setId(user.getId())
@@ -34,9 +35,10 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
     responseObserver.onCompleted();
   }
 
-  private User checkUser(String id)  {
+  private User checkUser(String id, StreamObserver<UserResponse> responseObserver)  {
     Optional<User> userOptional = userRepository.findById(id);
     if (!userOptional.isPresent()) {
+      responseObserver.onError(Status.FAILED_PRECONDITION.withDescription("Not found user Id").asRuntimeException());
 //      throw new Exception("User has not existed");
     }
     return userOptional.get();
@@ -45,7 +47,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
   @Override
   public void updateUserGenre(UserGenreUpdateRequest request, StreamObserver<UserResponse> responseObserver) {
     String id = request.getId();
-    User user = checkUser(id);
+    User user = checkUser(id, responseObserver);
     System.out.println(request.getGenre().name());
     user.setGenre(request.getGenre().name());
 
