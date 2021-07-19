@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package image;
+
+option java_package = "com.vinsguru.io";
+option java_multiple_files = true;
+
+message UploadImageRequest {
+  ImageInfo info = 1;
+  bytes chunk_data = 2;
+}
+
+message ImageInfo {
+  string id = 1;
+  string image_type = 2;
+}
+
+message UploadImageResponse {
+  string imageId = 1;
+  int32 size = 2;
+}
+
+service ImageService {
+  rpc UploadImage(stream UploadImageRequest) returns (UploadImageResponse);
+}

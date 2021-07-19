@@ -13,6 +13,8 @@
         <module>proto</module>
         <module>movie-service</module>
         <module>aggregator</module>
+        <module>stream</module>
+        <module>untitled</module>
     </modules>
 
     <parent>
