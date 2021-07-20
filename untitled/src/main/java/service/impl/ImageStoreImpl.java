@@ -1,6 +1,6 @@
 package service.impl;
 
-import com.sun.javafx.iio.ImageMetadata;
+import com.vinsguru.io.ImageInfo;
 import model.ImageMetaDataCustom;
 import service.ImageStore;
 
@@ -32,5 +32,14 @@ public class ImageStoreImpl implements ImageStore {
     ImageMetaDataCustom imageMetaDataCustom = new ImageMetaDataCustom(imageId, imageType, imagePath);
     data.put(imageId, imageMetaDataCustom);
     return imageId;
+  }
+
+  @Override
+  public ImageMetaDataCustom Find(String id) {
+    if (!data.containsKey(id)) {
+      return null;
+    }
+    ImageMetaDataCustom imageMetaDataCustom = data.get(id);
+    return imageMetaDataCustom;
   }
 }

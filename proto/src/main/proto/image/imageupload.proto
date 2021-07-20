@@ -6,8 +6,10 @@ option java_package = "com.vinsguru.io";
 option java_multiple_files = true;
 
 message UploadImageRequest {
-  ImageInfo info = 1;
-  bytes chunk_data = 2;
+  oneof data {
+    ImageInfo info = 1;
+    bytes chunk_data = 2;
+  }
 }
 
 message ImageInfo {
